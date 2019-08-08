@@ -1,0 +1,35 @@
+{
+  "name": "auth-svc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timmymorr/auth-svc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timmymorr/auth-svc/issues"
+  },
+  "homepage": "https://github.com/timmymorr/auth-svc#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^7.12.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.1"
+  }
+}
