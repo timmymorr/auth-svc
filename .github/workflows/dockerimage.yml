@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    - name: Build the tagged Docker image
+      run: docker build . --file Dockerfile --tag timmymorr/auth_svc:$(date +%s)
+    - name: Push the tagged Docker image
+      run: docker push timmymorr/auth_svc:$(date +%s))
+    - name: Build the latest Docker image
+      run: docker build . --file Dockerfile --tag timmymorr/auth_svc:latest
+    - name: Push the latest Docker image
+      run: docker push timmymorr/auth_svc:latest
