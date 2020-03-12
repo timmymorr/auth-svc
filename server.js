@@ -19,9 +19,11 @@ if (environment !== 'production') {
   app.use(logger('dev'));
 }
 
-const routes = require('./routes/index.js');
+const routes = require('./routes');
 
-app.use('/api/v1', routes(router));
+router.use('/', routes);
+
+app.use('/api', router);
 
 app.listen(`${stage.port}`, () => {
   console.log(`Server now listening at localhost:${stage.port}`);
