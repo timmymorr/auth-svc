@@ -3,13 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 
-let connUri;
-
-if(process.env.NODE_ENV === 'development') {
-  connUri = process.env.MONGO_LOCAL_CONN_URL;
-} else {
-  connUri = process.env.MONGO_PROD_CONN_URL;
-};
+const connUri = process.env.MONGO_LOCAL_CONN_URL;
 
 console.log('MONGO-URL: ', connUri);
 
