@@ -36,25 +36,22 @@ module.exports = {
     });
   },
   login: (req, res) => {
-    const { name, password } = req.body;
+    const { email, password } = req.body;
 
     mongoose.connect(connUri, { useNewUrlParser: true }, (err) => {
       let result = {};
       let status = 200;
       if(!err) {
-        User.findOne({name}, (err, user) => {
+        User.findOne({email}, (err, user) => {
           if (!err && user) {
             // We could compare passwords in our model instead of below
             bcrypt.compare(password, user.password).then(match => {
               if (match) {
                 // Create a token
-                const payload = { user: user.name };
+                const payload = { user: user.email };
                 const options = { expiresIn: '2d', issuer: 'https://timmymorr.io' };
                 const secret = process.env.JWT_SECRET;
-                const token = jwt.sign(payload, secret, options);
-
-                // console.log('TOKEN', token);
-                result.token = token;
+                result.token = jwt.sign(payload, secret, options);
                 result.status = status;
                 result.result = user;
               } else {

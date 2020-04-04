@@ -36,9 +36,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-if (environment !== 'production') {
-  app.use(logger('dev'));
-}
+app.use(logger('dev'));
 
 const routes = require('./routes');
 
