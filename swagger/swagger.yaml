@@ -1,0 +1,242 @@
+openapi: 3.0.0
+info:
+  version: '0.0.1'
+  title: 'Auth-svc API'
+  description: 'Authentication API'
+paths:
+  /api/v1/user:
+    post:
+      operationId: login-user
+      summary: Login User
+      description: Login existing user in the DB.
+      requestBody:
+        description: Movie data as JSON object  
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {
+                email: "test@mail.com",
+	              password: "Password1"
+              }
+      responses:
+        '200':
+          description: 'Login User'
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {
+                  user_id: 1,
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpX.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                }
+        '401':
+          description: "401 Error"
+          content: 
+            application/json:
+              schema:
+                type: object
+                example: {
+                  message: "Authorization failure",
+                  code: 401
+                }
+        '404':
+          description: "404 Error"
+          content: 
+            application/json:
+              schema:
+                type: object
+                example: {
+                  message: "Unable to find user",
+                  code: 404
+                }
+        '500':
+          description: "500 Error"
+          content: 
+            application/json:
+              schema:
+                type: object
+                example: {
+                  message: "Internal Server Error",
+                  code: 500
+                }
+  /api/v1/user/{id}:
+    get:
+      operationId: get-user
+      summary: Get User
+      description: Get existing user in the DB.
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "Bearer: Token"
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Unique ID of the user to get
+      responses:
+        '200':
+          description: 'Get User'
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {
+                  user_id: 1,
+                  email: "test@mail.com",
+                  firstName: "timmy",
+	                lastName: "morrissey",
+                }
+        '401':
+          description: "401 Error"
+          content: 
+            application/json:
+              schema:
+                type: object
+                example: {
+                  message: "Authorization failure",
+                  code: 401
+                }
+        '404':
+          description: "404 Error"
+          content: 
+            application/json:
+              schema:
+                type: object
+                example: {
+                  message: "Unable to find user",
+                  code: 404
+                }
+        '500':
+          description: "500 Error"
+          content: 
+            application/json:
+              schema:
+                type: object
+                example: {
+                  message: "Internal Server Error",
+                  code: 500
+                }
+    delete:
+      operationId: delete-user
+      summary: Delete a user by id
+      description: Delete user by id
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "Bearer: Token"
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Unique ID of the user to delete
+      responses:
+        '200':
+          description: 'User Deleted'
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {
+                  id: 1,
+                  status: "deleted"
+                }
+        '404':
+          description: "404 Error"
+          content: 
+            application/json:
+              schema:
+                type: object
+                example: {
+                  message: "unable to find User",
+                  code: 404
+                }
+        '500':
+          description: "500 Error"
+          content: 
+            application/json:
+              schema:
+                type: object
+                example: {
+                  message: "Internal Server Error",
+                  code: 500
+                }
+  /api/v1/users:
+    get:
+      operationId: get-users
+      summary: Get Users
+      description: Get all users in the DB.
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
+          description: "Bearer: Token"
+      responses:
+        '200':
+          description: 'Get Users'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  example: {
+                    user_id: 1,
+                    email: "test@mail.com",
+                    firstName: "timmy",
+  	                lastName: "morrissey"
+                  }
+                
+    post:
+      operationId: register-user
+      summary: Register User
+      description: Regisrter a new user to the DB.
+      requestBody:
+        description: User data as JSON object  
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {
+                firstName: "timmy",
+              	lastName: "morrissey",
+              	email: "test@mail.com",
+              	password: "password1"
+              }
+      responses:
+        '201':
+          description: 'Registered user'
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {
+                  user_id: 1,
+                  email: "test@mail.com"
+                }
+        '500':
+          description: "500 Error"
+          content: 
+            application/json:
+              schema:
+                type: object
+                example: {
+                  message: "Internal Error",
+                  ode: 500
+                }
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/timmymorr/Auth/0.0.1
