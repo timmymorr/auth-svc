@@ -3,6 +3,9 @@ require('dotenv').config(); // Sets up dotenv as soon as our application starts
 const express = require('express'); 
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger/swagger.yaml');
 const formatSeconds = require('./utils').formatSeconds;
 
 const app = express();
@@ -15,6 +18,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Add headers
 app.use(function (req, res, next) {
