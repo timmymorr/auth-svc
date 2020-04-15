@@ -185,3 +185,5 @@ paths:
 servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/timmymorr/Auth/0.0.1
+  - description: Use real data
+    url: https://localhost:3000
