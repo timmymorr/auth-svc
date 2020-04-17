@@ -7,7 +7,7 @@ info:
     email: timmymorr@gmail.com
 servers:
   - description: This server
-    url: https://localhost:3000
+    url: https://localhost/auth
 tags:
   - name: user
     description: Operations about a single user
