@@ -1,11 +1,23 @@
 openapi: 3.0.0
 info:
   version: '0.0.1'
-  title: 'Auth-svc API'
-  description: 'Authentication API'
+  title: Auth API
+  description: Authentication API. Find out more [here](https://github.com/timmymorr/auth-svc).
+  contact:
+    email: timmymorr@gmail.com
+servers:
+  - description: This server
+    url: https://localhost:3000
+tags:
+  - name: user
+    description: Operations about a single user
+  - name: users
+    description: Operations about users collection
 paths:
   /api/v1/user:
     post:
+      tags:
+        - user
       operationId: login-user
       summary: Login User
       description: Login existing user in the DB.
@@ -48,6 +60,8 @@ paths:
                 example: {message: "Internal Server Error", code: 500}
   /api/v1/user/{id}:
     get:
+      tags:
+        - user
       operationId: get-user
       summary: Get User
       description: Get existing user in the DB.
@@ -94,6 +108,8 @@ paths:
                 type: object
                 example: {message: "Internal Server Error", code: 500}
     delete:
+      tags:
+        - user
       operationId: delete-user
       summary: Delete a user by id
       description: Delete user by id
@@ -134,6 +150,8 @@ paths:
                 example: {message: "Internal Server Error", code: 500}
   /api/v1/users:
     get:
+      tags:
+        - users
       operationId: get-users
       summary: Get Users
       description: Get all users in the DB.
@@ -155,6 +173,8 @@ paths:
                   type: object
                   example: {user_id: 1, email: "test@mail.com", firstName: "timmy", lastName: "morrissey"}
     post:
+      tags:
+        - users
       operationId: register-user
       summary: Register User
       description: Regisrter a new user to the DB.
@@ -181,9 +201,3 @@ paths:
               schema:
                 type: object
                 example: {message: "Internal Error", code: 500}
-# Added by API Auto Mocking Plugin
-servers:
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/timmymorr/Auth/0.0.1
-  - description: Use real data
-    url: https://localhost:3000
