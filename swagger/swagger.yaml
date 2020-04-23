@@ -6,8 +6,16 @@ info:
   contact:
     email: timmymorr@gmail.com
 servers:
-  - description: This server
-    url: https://localhost:3000
+  - description: Local server
+    url: http://localhost:5000
+  - description: Deployed server
+    url: http://localhost/auth
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
 tags:
   - name: user
     description: Operations about a single user
@@ -60,6 +68,8 @@ paths:
                 example: {message: "Internal Server Error", code: 500}
   /api/v1/user/{id}:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - user
       operationId: get-user
@@ -108,6 +118,8 @@ paths:
                 type: object
                 example: {message: "Internal Server Error", code: 500}
     delete:
+      security:
+        - bearerAuth: []
       tags:
         - user
       operationId: delete-user
@@ -150,6 +162,8 @@ paths:
                 example: {message: "Internal Server Error", code: 500}
   /api/v1/users:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - users
       operationId: get-users

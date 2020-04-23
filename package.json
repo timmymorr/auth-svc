@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/timmymorr/auth-svc#readme",
   "dependencies": {
+    "@timmymorr/token-validator": "^1.0.1",
     "bcrypt": "3.0.6",
     "body-parser": "1.19.0",
     "dotenv": "8.0.0",
