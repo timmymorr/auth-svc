@@ -5,11 +5,14 @@ const User = require('../models/users');
 
 const connUri = process.env.MONGO_LOCAL_CONN_URL;
 
-console.log('MONGO-URL: ', connUri);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
 
 module.exports = {
   add: (req, res) => {
-    mongoose.connect(connUri, { useNewUrlParser : true }, (err) => {
+    mongoose.connect(connUri, (err) => {
       let result;
       let status = 201;
       if (!err) {
@@ -41,7 +44,7 @@ module.exports = {
   login: (req, res) => {
     const { email, password } = req.body;
 
-    mongoose.connect(connUri, { useNewUrlParser: true }, (err) => {
+    mongoose.connect(connUri, (err) => {
       let result;
       let status = 200;
       if(!err) {
@@ -93,7 +96,7 @@ module.exports = {
   },
   getUser: (req, res) => {
     const { id } = req.params;
-    mongoose.connect(connUri, {useNewUrlParser: true}, (err) => {
+    mongoose.connect(connUri, (err) => {
       let result;
       let status = 200;
       if (!err) {
@@ -121,26 +124,28 @@ module.exports = {
     });
   },
   getAll: (req, res) => {
-    mongoose.connect(connUri, { useNewUrlParser: true }, (err) => {
+    mongoose.connect(connUri, (err) => {
       let result;
       let status = 200;
-      User.find({}, (err, users) => {
-        if (!err) {
-          res.status(status).send(users);
-        } else {
-          status = 500;
-          result = {
-            message: "Internal server error",
-            code: status
-          }
-          res.status(status).send(result);
-          }
-      });
+      if (!err) {
+        User.find({}, (err, users) => {
+          if (!err && users) {
+            res.status(status).send(users);
+          } else {
+            status = 500;
+            result = {
+              message: "Internal server error",
+              code: status
+            }
+            res.status(status).send(result);
+            }
+        });
+      }
     });
   },
   deleteUser: (req, res) => {
     const { id } = req.params;
-    mongoose.connect(connUri, {useNewUrlParser: true}, (err) => {
+    mongoose.connect(connUri, (err) => {
       let result;
       let status = 200;
       if (!err) {
