@@ -2,3 +2,8 @@
 .env
 # Dependency directories
 node_modules
+mochawesome-reports/
+mochawesome-report/
+_site/
+coverage/
+.nyc_output/

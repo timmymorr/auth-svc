@@ -5,10 +5,12 @@
   "main": "server.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=production node server.js",
     "lint": "eslint --ext .js server.js config.js utils.js routes",
-    "unit": "cross-env NODE_ENV=test mocha ./tests/unit/*.js --exit"
+    "unit": "cross-env NODE_ENV=test mocha ./tests/unit/*.js --exit --reporter mochawesome",
+    "integration": "cross-env NODE_ENV=test mocha ./tests/integration/*.js --exit --reporter mochawesome",
+    "test": "npm run unit && npm run integration",
+    "coverage": "nyc npm run test"
   },
   "repository": {
     "type": "git",
@@ -39,9 +41,11 @@
     "eslint-config-airbnb-base": "14.1.0",
     "eslint-plugin-import": "2.20.2",
     "mocha": "^7.1.2",
+    "mochawesome": "^6.1.1",
     "mockgoose": "8.0.4",
     "morgan": "1.9.1",
     "nodemon": "1.19.1",
+    "nyc": "^15.0.1",
     "should": "13.2.3",
     "supertest": "^4.0.2"
   }

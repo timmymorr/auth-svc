@@ -22,8 +22,7 @@ module.exports = {
         } = req.body;
         const newUser = new User({
           firstName, lastName, email, password,
-        }); // document = instance of a model
-        // TODO: We can hash the password here before we insert instead of in the model
+        });
         newUser.save((err, user) => {
           if (!err) {
             result = {
