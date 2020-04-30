@@ -8,10 +8,28 @@ on:
 
 jobs:
 
+  jobs:
+    environment: 
+      runs-on: ubuntu-16.04
+      steps:
+        - name: Setup Node
+          uses: actions/setup-node@v1
+          with:
+            node-version: '12.x'
+          
+  install-and-lint: 
+    needs: environment
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Dependencies install
+        run: npm install
+      - name: Linter
+        run: npm run lint
+
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Login to DockerHub Registry

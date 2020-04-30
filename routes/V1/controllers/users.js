@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -12,31 +13,37 @@ mongoose.set('useUnifiedTopology', true);
 
 module.exports = {
   add: (req, res) => {
-    mongoose.connect(connUri, (err) => {
+    mongoose.connect(connUri, (error) => {
       let result;
       let status = 201;
-      if (!err) {
-        const { firstName, lastName, email, password } = req.body;
-        const user = new User({ firstName, lastName, email, password }); // document = instance of a model
+      if (!error) {
+        const {
+          firstName, lastName, email, password,
+        } = req.body;
+        const newUser = new User({
+          firstName, lastName, email, password,
+        }); // document = instance of a model
         // TODO: We can hash the password here before we insert instead of in the model
-        user.save((err, user) => {
+        newUser.save((err, user) => {
           if (!err) {
-            result = {id: user._id, email};
+            result = {
+              id: user._id, email,
+            };
           } else {
             status = 500;
             result = {
-              message: "Internal server error",
-              code: status
-            }
+              message: 'Internal server error',
+              code: status,
+            };
           }
           res.status(status).send(result);
         });
       } else {
         status = 500;
         result = {
-          message: "Internal server error",
-          code: status
-        }
+          message: 'Internal server error',
+          code: status,
+        };
         res.status(status).send(result);
       }
     });
@@ -44,14 +51,14 @@ module.exports = {
   login: (req, res) => {
     const { email, password } = req.body;
 
-    mongoose.connect(connUri, (err) => {
+    mongoose.connect(connUri, (error) => {
       let result;
       let status = 200;
-      if(!err) {
-        User.findOne({email}, (err, user) => {
+      if (!error) {
+        User.findOne({ email }, (err, user) => {
           if (!err && user) {
             // We could compare passwords in our model instead of below
-            bcrypt.compare(password, user.password).then(match => {
+            bcrypt.compare(password, user.password).then((match) => {
               if (match) {
                 // Create a token
                 const payload = { user: user.email };
@@ -59,22 +66,22 @@ module.exports = {
                 const secret = process.env.JWT_SECRET;
                 result = {
                   id: user._id,
-                  token: jwt.sign(payload, secret, options)
+                  token: jwt.sign(payload, secret, options),
                 };
               } else {
                 status = 401;
                 result = {
-                  message: "Authorization failure",
-                  code: status
-                }
+                  message: 'Authorization failure',
+                  code: status,
+                };
               }
               res.status(status).send(result);
-            }).catch(err => {
+            }).catch(() => {
               status = 500;
               result = {
-                message: "Internal server error",
-                code: status
-              }
+                message: 'Internal server error',
+                code: status,
+              };
               res.status(status).send(result);
             });
           } else {
@@ -87,19 +94,19 @@ module.exports = {
       } else {
         status = 500;
         result = {
-          message: "Internal server error",
-          code: status
-        }
+          message: 'Internal server error',
+          code: status,
+        };
         res.status(status).send(result);
       }
     });
   },
   getUser: (req, res) => {
     const { id } = req.params;
-    mongoose.connect(connUri, (err) => {
+    mongoose.connect(connUri, (error) => {
       let result;
       let status = 200;
-      if (!err) {
+      if (!error) {
         User.findById(id, (err, user) => {
           if (!err && user) {
             result = user;
@@ -107,69 +114,69 @@ module.exports = {
           } else {
             status = 404;
             result = {
-              message: "Unable to find user",
-              code: status
-            }
+              message: 'Unable to find user',
+              code: status,
+            };
             res.status(status).send(result);
           }
         });
       } else {
         status = 500;
         result = {
-          message: "Internal server error",
-          code: status
-        }
+          message: 'Internal server error',
+          code: status,
+        };
         res.status(status).send(result);
       }
     });
   },
   getAll: (req, res) => {
-    mongoose.connect(connUri, (err) => {
+    mongoose.connect(connUri, (error) => {
       let result;
       let status = 200;
-      if (!err) {
+      if (!error) {
         User.find({}, (err, users) => {
           if (!err && users) {
             res.status(status).send(users);
           } else {
             status = 500;
             result = {
-              message: "Internal server error",
-              code: status
-            }
+              message: 'Internal server error',
+              code: status,
+            };
             res.status(status).send(result);
-            }
+          }
         });
       }
     });
   },
   deleteUser: (req, res) => {
     const { id } = req.params;
-    mongoose.connect(connUri, (err) => {
+    mongoose.connect(connUri, (error) => {
       let result;
       let status = 200;
-      if (!err) {
+      if (!error) {
         User.findByIdAndDelete(id, (err, user) => {
           if (!err && user) {
-            result = {id: user._id}
+            result = { id: user._id };
             res.status(status).send(result);
           } else {
             status = 404;
             result = {
-              message: "Unable to find user",
-              code: status
-            }
+              message: 'Unable to find user',
+              code: status,
+            };
             res.status(status).send(result);
           }
         });
       } else {
         status = 500;
         result = {
-          message: "Internal server error",
-          code: status
-        }
+          message: 'Internal server error',
+          code: status,
+        };
         res.status(status).send(result);
       }
     });
   },
-}
+};
