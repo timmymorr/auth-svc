@@ -26,8 +26,8 @@ jobs:
           run: npm run lint
         - name: Unit Tests
           run: npm run unit
-        - name: Integration Tests
-          run: npm run integration
+        # - name: Integration Tests
+        #   run: npm run integration
         - name: Coverage Report
           run: npm run coverage
 
