@@ -4,7 +4,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 
-const connUri = process.env.MONGO_LOCAL_CONN_URL;
+const connUri = process.env.NODE_ENV === 'development'
+  ? process.env.MONGO_DEV_CONN_URL
+  : process.env.MONGO_PROD_CONN_URL;
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);

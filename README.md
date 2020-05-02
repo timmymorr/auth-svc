@@ -29,7 +29,6 @@ You will need the following `.env` contents when running the app. You will also 
 ```bat
 JWT_SECRET=timmysdevelopmentjwtsecret
 MONGO_LOCAL_CONN_URL=mongodb://127.0.0.1:27017/auth
-MONGO_PROD_CONN_URL=mongodb://mongo:27017/auth
 MONGO_DB_NAME=movie-app
 ```
 
