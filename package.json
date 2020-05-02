@@ -42,7 +42,6 @@
     "eslint-plugin-import": "2.20.2",
     "mocha": "^7.1.2",
     "mochawesome": "^6.1.1",
-    "mockgoose": "8.0.4",
     "morgan": "1.9.1",
     "nodemon": "1.19.1",
     "nyc": "^15.0.1",
