@@ -62,7 +62,7 @@ module.exports = {
             bcrypt.compare(password, user.password).then((match) => {
               if (match) {
                 // Create a token
-                const payload = { user: user.email };
+                const payload = { user_id: user._id };
                 const options = { expiresIn: '2d', issuer: 'https://timmymorr.io' };
                 const secret = process.env.JWT_SECRET;
                 result = {

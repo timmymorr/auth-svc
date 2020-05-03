@@ -64,6 +64,13 @@ run code for production
 npm run start
 ```
 
+run backend with docker compose
+```bat
+git clone https://github.com/timmymorr/movie-app-docker-compose.git
+cd movie-app-docker-compose
+docker-compose up (use -d to run detached)
+```
+
 ## API Design
 
 [Live hosted Swagger Doc](http://35.223.232.250/auth/api-docs/)
@@ -82,33 +89,58 @@ Protected routes:
 `GET api/v1/users`
 
 ## Testing
-I implemented unit testing on the user schema. This testing was reasonable basic, just covering the validation of required fields.
+I implemented unit testing on the user schema. This testing was reasonable basic, just covering the validation of required fields. I wrote some basic integration tests to test all routes and one test to check route validation. I implemented istanbul test coverage also.
+
+![][image1]
+
+![][image2]
 
 ## Integrating with React App
 
-Describe how you integrated your React app with the API. Perhaps link to the React App repo and give an example of an API call from React App. For example: 
+I used the axios HTTP client in the react app as it is very lightweight and provides a lot of features. One very useful feature was that it provides responses in JSON format so no need to add the extra step that is required with fetch. I added an abstraction layer to create a wrapper around axios and this way it only needed to be imported in one file and this could be called from my other API services.
+
+Axios wrapper:
 
 ~~~Javascript
-export const getMovies = () => {
-  return fetch(
-     '/api/movies',{headers: {
-       'Authorization': window.localStorage.getItem('token')
-    }
-  }
-  )
-    .then(res => res.json())
-    .then(json => {return json.results;});
+import axios from 'axios';
+
+const makeRequest = (method, url, data = {}, headers) => {
+  return axios({
+    method,
+    url,
+    data,
+    headers
+  });
 };
 
+export default makeRequest;
+
+~~~
+
+Making a request:
+
+~~~Javascript
+import makeRequest from './APIService';
+import {Method, Service, Endpoint} from './constants';
+
+const baseUrl = 'http://localhost';
+
+const register = async (data) => {
+  const url = `${baseUrl}${Service.AUTH}${Endpoint.REGISTER}`;
+  const response = await makeRequest(Method.POST, url, data);
+  return response.data; 
+};
 ~~~
 
 ## Extra features
 
-. . Briefly explain any non-standard features, functional or non-functional (e.g. user registration, authentication) developed for the app  
+I provided functionality to register users and to login users with a token being returned. This token is required to call other endpoints to retrieve users and delete users. These extra endpoints are not used in the app but were created to allow an admin to call them.
 
 ## Independent learning.
 
-. . State the non-standard aspects of React/Express/Node (or other related technologies) that you researched and applied in this assignment . .  
+I had to do some research into docker as the backend services were deployed in docker containers.
+I needed to learn how to set up a reverse proxy in nginx so I could run an nginx container to proxy requests to the correct containers.
+I used github actions to run tests and build and push the docker images, one issue I had was getting the integration tests to run in a github action. I tried to run a mongodb docker container and run the tests against it but it failed so I disabled the integration tests on the github action.
 
-
-[image1]: ./testing.png
+[image1]: readmeImages/unit.png
+[image2]: readmeImages/coverage.png
