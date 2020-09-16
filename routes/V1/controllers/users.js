@@ -87,8 +87,10 @@ module.exports = {
             });
           } else {
             status = 404;
-            result.status = status;
-            result.error = err;
+            result = {
+              message: err,
+              code: status,
+            };
             res.status(status).send(result);
           }
         });
